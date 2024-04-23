@@ -1,8 +1,5 @@
 from functions import giocatore,header,start_menu,select_challenge,load_save,player_stats,settings,heal
 
-
-
-
 #ctrl k c / ctrl k u
 
 print("""
