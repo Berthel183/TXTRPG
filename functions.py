@@ -1,5 +1,6 @@
 #Funzioni contenute:header, player_stats, settings, load_save, heal, select_challenge, 
 from scelta_utente import get_user_choice
+from gameplay import start_game
 import random
 
 class Enemy:
@@ -32,15 +33,15 @@ def header():
     print("Ti vuoi chiamare,",nome_iniziale,"? 1 per confermare, 2 per inserire un altro nome")
     choice = get_user_choice("",2)
 
-    if choice == 2:
+    if choice == 1:        
+        print("Hai confermato il tuo nome!")
+        giocatore.name = nome_iniziale
+        return giocatore
+    elif choice == 2:
         print("allora, ricominciamo!")
         header()
-    elif choice == 1:        
-        print("Hai confermato il tuo nome!")
+    start_menu(select_challenge,load_save,player_stats,settings,heal)
     
-    giocatore.name = nome_iniziale
-    return giocatore
-
 #Menù principale di gioco
 def start_menu(select_challenge, load_save, player_stats, settings, heal):
     
@@ -56,7 +57,7 @@ def start_menu(select_challenge, load_save, player_stats, settings, heal):
     6) Esci
     
     """)
-    choice = int(input(">"))
+    choice = get_user_choice(">",6)
     
     if choice == 1:
         if giocatore.hp <= 0:
@@ -92,6 +93,7 @@ def start_menu(select_challenge, load_save, player_stats, settings, heal):
     else:
         print("immissione non valida, daje mpò")
         start_menu(select_challenge,load_save,player_stats,settings,heal)   
+
 
 #STATISTICHE PLAYER
 def player_stats(exp_pool):
@@ -178,7 +180,7 @@ def select_challenge():
     enemylist3 = ("Drago","Lich","Golem","Flayer")
     enemylist4 = ("GOD")
     
-    challenge = int(input(">"))
+    challenge = get_user_choice(">",4)
     
     if challenge == 1:
         enemy.name = random.choice(enemylist1)
@@ -188,6 +190,7 @@ def select_challenge():
         enemy.exp = 5
         #drop_item_weapon
         #drop_item_armor
+        return enemy
 
     elif challenge == 2:
         enemy.name = random.choice(enemylist2)
@@ -195,13 +198,15 @@ def select_challenge():
         enemy.minatk = 15
         enemy.maxatk = 20
         enemy.exp = 10
-       
+        return enemy
+
     elif challenge == 3:
         enemy.name = random.choice(enemylist3)
         enemy.hp = random.randint(130,170)
         enemy.minatk = 20
         enemy.maxatk = 30
         enemy.exp = 20
+        return enemy
 
     elif challenge == 4:
         enemy.name = (enemylist4)
@@ -209,13 +214,16 @@ def select_challenge():
         enemy.minatk = 666
         enemy.maxatk = 1337
         enemy.exp = 500
-        
+        return enemy
+
     else:
         print("immissione non valida, te risparo il pippone, premi qualcosa")
         input(">cojone<")
         select_challenge()
+    start_game(select_challenge,load_save,player_stats,settings,heal)
+    
 
-    return enemy
+#start_menu(select_challenge,load_save,player_stats,settings,heal)
 
 
 

@@ -21,13 +21,7 @@ header()
 
 print("E allora ti porgo il mio benvenuto""",giocatore.name,""",per ora, attaccherai solo, non ci sono altre opzioni, un mostro verrà scelto in base alla difficoltà e durante il combattimento,
     l'ordine d'attacco sarà casuale: quindi sostanzialmente continua ad attaccare e spera di vincere!""")
-
 start_menu(select_challenge,load_save,player_stats,settings,heal)
-
-
-
-
- 
 
 
 
