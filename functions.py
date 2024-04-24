@@ -4,7 +4,7 @@ from gameplay import start_game
 import random
 
 class Player:
-    def __init__(self,name,hp,atk,exp,lv,maxhp,exp_pool):
+    def __init__(self,name,hp,atk,exp,lv,maxhp,exp_pool,equip):
         self.name = name
         self.hp = hp
         self.atk = atk  
@@ -12,6 +12,11 @@ class Player:
         self.lv = lv      
         self.maxhp = maxhp
         self.exp_pool = exp_pool
+        self.equip = {
+            'Arma':None,
+            'Corpo':None,
+            'Scudo':None
+        }
 
 class Enemy:
     def __init__(self,name,hp,minatk,maxatk,exp):
@@ -21,11 +26,21 @@ class Enemy:
         self.maxatk = maxatk
         self.exp = exp
 
+class Bonus_Equip:
+    def __init__(self,atk_bonus,def_bonus,hp_bonus):
+        self.atk_bonus = atk_bonus
+        self.def_bonus = def_bonus
+        self.hp_bonus = hp_bonus
 
 
-
-giocatore = Player(0,50,12,0,1,50,10)
+giocatore = Player(0,50,12,0,1,50,10,0)
 enemy = Enemy(0,0,0,0,0)
+equip = Bonus_Equip(0,0,0)
+
+
+
+def total_atk(giocatore):
+    giocatore.atk += giocatore.equip
 
 
 
@@ -114,21 +129,22 @@ def player_stats(giocatore):
     start_menu(giocatore)
 
 def level_up(giocatore):       
-    #for player_exp in exp_pool:
-    
-    print(giocatore.exp_pool,"EXP POOL PRINT PRIMA")
-    giocatore.exp_pool += 10
-    print(giocatore.exp_pool,"EXP POOL PRINT")
-    giocatore.maxhp += 10
-    giocatore.atk += 4
-    print(giocatore.exp,"GIOCATORE EXP PRINT PRIMA")
-    giocatore.exp = 0
-    print(giocatore.exp,"GIOCATORE EXP PRINT")
-    giocatore.lv += 1
-    giocatore.hp = giocatore.maxhp
-    print("Vita:",giocatore.hp)
-    print("Attacco:",giocatore.atk)
-    print("Esperienza",giocatore.exp,"\n")
+    #for giocatore.exp in giocatore.exp_pool:
+    while giocatore.exp >= giocatore.exp_pool:
+        #print(giocatore.exp_pool,"EXP POOL PRINT PRIMA")
+        
+        giocatore.exp -= giocatore.exp_pool #toglie dalla exp del giocatore il valore di pool raggiunto
+        giocatore.exp_pool += 10   #incrementa il pool da raggiungere di 10
+        print("Devi raggiungere ",giocatore.exp_pool," PE per il prossimo livello!")
+        giocatore.maxhp += 10
+        giocatore.atk += 4
+        #print("Attualmente hai ",giocatore.exp," PE")
+        giocatore.lv += 1
+        giocatore.hp = giocatore.maxhp
+
+        print("Vita:",giocatore.hp)
+        print("Attacco:",giocatore.atk)
+        print("Esperienza",giocatore.exp,"\n")
 
     input('premi qualsiasi tasto per tornare al menù!')
     start_menu(giocatore)

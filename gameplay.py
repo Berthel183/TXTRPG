@@ -36,7 +36,7 @@ def start_game(enemy,giocatore):
                     print("Hai guadagnato",enemy.exp,"punti esperienza!")
                     giocatore.exp += enemy.exp
                 
-                    if giocatore.exp == giocatore.exp_pool:
+                    if giocatore.exp >= giocatore.exp_pool:
                         level_up(giocatore)
                         print("Ora sei al livello",giocatore.lv,"!!!")
                         input(">")
@@ -72,7 +72,7 @@ def start_game(enemy,giocatore):
                         print("IL TUO AVVERSARIO E' STATO SCONFITTO! DAJE ZI")
                         print("Hai guadagnato",enemy.exp,"punti esperienza!")
                         giocatore.exp += enemy.exp
-                        if giocatore.exp == giocatore.exp_pool:
+                        if giocatore.exp >= giocatore.exp_pool:
                             level_up(giocatore)
                             print("Ora sei al livello",giocatore.lv,"!!!")
                             input(">")
