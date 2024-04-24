@@ -1,13 +1,13 @@
 import random
+from scelta_utente import get_user_choice
+#from functions import start_menu
 
-
-def start_game(enemy,giocatore,exp_pool):
-
+def start_game(enemy,giocatore):
     print("Attenzione!",enemy.name,"ti sta attaccando! possiede",enemy.hp,"punti ferita, e tanta voglia di menare, preparati!!!")
     
     while enemy.hp > 0 and giocatore.hp > 0:
         print("cosa vuoi fare? 1=attacco, 2=un cazzo perchè non puoi fare altro")
-        azione = int(input(">"))
+        azione = get_user_choice(">",2)
         
         if azione != 1 and azione != 2:
             print("""  
@@ -20,7 +20,7 @@ def start_game(enemy,giocatore,exp_pool):
         exit
         
         if azione == 1:
-             
+            from functions import start_menu, level_up
             playerturn = random.randint(1,20)
             enemyturn = random.randint(1,20)
             
@@ -30,16 +30,19 @@ def start_game(enemy,giocatore,exp_pool):
             if playerturn > enemyturn:
                 enemy.hp -= giocatore.atk
                 print("\n",giocatore.name,"hai fatto",giocatore.atk,"danni! Il mostro è rimasto con",enemy.hp,"punti ferita!")
-                
+
                 if enemy.hp <= 0:
                     print("IL TUO AVVERSARIO E' STATO SCONFITTO! DAJE ZI")
                     print("Hai guadagnato",enemy.exp,"punti esperienza!")
-                    giocatore.exp + enemy.exp
-                    if giocatore.exp == exp_pool:
-                        print("Ora sei al livello",giocatore.lv+1,"!!!")
+                    giocatore.exp += enemy.exp
+                
+                    if giocatore.exp == giocatore.exp_pool:
+                        level_up(giocatore)
+                        print("Ora sei al livello",giocatore.lv,"!!!")
                         input(">")
-                        from menu import start_menu
-                        start_menu()
+                        start_menu(giocatore)
+                    else:
+                        start_menu(giocatore)
                         
                 else:
                     attacco_nemico = random.randint(enemy.minatk,enemy.maxatk)
@@ -48,8 +51,8 @@ def start_game(enemy,giocatore,exp_pool):
                     if giocatore.hp <= 0:
                         print("BER COJONE SEI MORTO")
                         input(">")
-                        from menu import start_menu
-                        start_menu()
+                        
+                        start_menu(giocatore)
                 
             if enemyturn > playerturn:
                 attacco_nemico = random.randint(enemy.minatk,enemy.maxatk)
@@ -59,8 +62,8 @@ def start_game(enemy,giocatore,exp_pool):
                 if giocatore.hp <= 0:
                     print("BER COJONE SEI MORTO")
                     input(">")
-                    from menu import start_menu
-                    start_menu()
+                    
+                    start_menu(giocatore)
                 
                 else:
                     enemy.hp -= giocatore.atk
@@ -68,12 +71,14 @@ def start_game(enemy,giocatore,exp_pool):
                     if enemy.hp <= 0:
                         print("IL TUO AVVERSARIO E' STATO SCONFITTO! DAJE ZI")
                         print("Hai guadagnato",enemy.exp,"punti esperienza!")
-                        giocatore.exp + enemy.exp
-                        if giocatore.exp == exp_pool:
-                            print("Ora sei al livello",giocatore.lv+1,"!!!")
+                        giocatore.exp += enemy.exp
+                        if giocatore.exp == giocatore.exp_pool:
+                            level_up(giocatore)
+                            print("Ora sei al livello",giocatore.lv,"!!!")
                             input(">")
-                            from menu import start_menu
-                            start_menu()
+                            start_menu(giocatore)
+                        else:
+                            start_menu(giocatore)
     return giocatore                      
 
 #raccoglie i valori dal def e printa l'indice del valore interessato

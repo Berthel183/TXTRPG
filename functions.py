@@ -3,6 +3,16 @@ from scelta_utente import get_user_choice
 from gameplay import start_game
 import random
 
+class Player:
+    def __init__(self,name,hp,atk,exp,lv,maxhp,exp_pool):
+        self.name = name
+        self.hp = hp
+        self.atk = atk  
+        self.exp = exp
+        self.lv = lv      
+        self.maxhp = maxhp
+        self.exp_pool = exp_pool
+
 class Enemy:
     def __init__(self,name,hp,minatk,maxatk,exp):
         self.name = name
@@ -11,20 +21,13 @@ class Enemy:
         self.maxatk = maxatk
         self.exp = exp
 
-class Player:
-    def __init__(self,name,hp,atk,exp,lv,maxhp):
-        self.name = name
-        self.hp = hp
-        self.atk = atk  
-        self.exp = exp
-        self.lv = lv      
-        self.maxhp = maxhp
 
 
-giocatore = Player(0,50,12,0,1,50)
+
+giocatore = Player(0,50,12,0,1,50,10)
 enemy = Enemy(0,0,0,0,0)
-exp_pool = 10
-lvcount = 0
+
+
 
 #Intro e primo input per creazione nome
 def header():
@@ -40,10 +43,10 @@ def header():
     elif choice == 2:
         print("allora, ricominciamo!")
         header()
-    start_menu(select_challenge,load_save,player_stats,settings,heal)
+    start_menu(giocatore)
     
 #Menù principale di gioco
-def start_menu(select_challenge, load_save, player_stats, settings, heal):
+def start_menu(giocatore):
     
     print("""
     Quindi,""",giocatore.name,""",Ora che siamo pronti, scegli cosa fare!
@@ -62,22 +65,22 @@ def start_menu(select_challenge, load_save, player_stats, settings, heal):
     if choice == 1:
         if giocatore.hp <= 0:
             print("DOVE CAZZO VAI CO",giocatore.hp,"DI VITA?? CURATI",input("/>Premi un tasto!"))
-            start_menu(select_challenge,load_save,player_stats,settings,heal)
+            start_menu(giocatore)
         else:
             select_challenge()
-
+            start_game(enemy,giocatore)
     elif choice == 2: 
         load_save()
 
     elif choice == 3:
-        player_stats(exp_pool)
+        player_stats(giocatore)
 
     elif choice == 4:
         nome = settings()
         giocatore.name = nome
     
     elif choice == 5:
-        heal()
+        heal(giocatore)
 
     elif choice == 6:
         print("Sei sicuro di voler uscire? ti caghi? 1 Per uscire 0 per tornare al menu")
@@ -88,55 +91,56 @@ def start_menu(select_challenge, load_save, player_stats, settings, heal):
             exit()
         elif close == 0:
             print("v-Prego di qua, mi segua-v")
-            start_menu(select_challenge,load_save,player_stats,settings,heal)
+            start_menu(giocatore)
 
     else:
         print("immissione non valida, daje mpò")
-        start_menu(select_challenge,load_save,player_stats,settings,heal)   
+        start_menu(giocatore)   
 
+#def main_menu(giocatore):
+    
 
 #STATISTICHE PLAYER
-def player_stats(exp_pool):
+def player_stats(giocatore):
     
-    if giocatore.exp < exp_pool:
-        print("Ciao",giocatore.name,", ecco le tue statistiche!")
-        print("Vita massima:",giocatore.maxhp)
-        print("Vita:",giocatore.hp)
-        print("Attacco:",giocatore.atk)
-        print("livello:",giocatore.lv)
-        print("Esperienza:",giocatore.exp,"\n")
+    print("Ciao",giocatore.name,", ecco le tue statistiche!")
+    print("Vita massima:",giocatore.maxhp)
+    print("Vita:",giocatore.hp)
+    print("Attacco:",giocatore.atk)
+    print("livello:",giocatore.lv)
+    print("Esperienza:",giocatore.exp,"\n")
 
-        input('premi qualsiasi tasto per tornare al menù!')
-        start_menu(select_challenge,load_save,player_stats,settings,heal)
-        
+    input('premi qualsiasi tasto per tornare al menù!')
+    start_menu(giocatore)
+
+def level_up(giocatore):       
     #for player_exp in exp_pool:
-    else:
-        print(exp_pool,"EXP POOL PRINT PRIMA")
-        exp_pool += 10
-        print(exp_pool,"EXP POOL PRINT")
-        giocatore.maxhp += 10
-        giocatore.atk += 4
-        print(giocatore.exp,"GIOCATORE EXP PRINT PRIMA")
-        giocatore.exp = 0
-        print(giocatore.exp,"GIOCATORE EXP PRINT")
-        giocatore.lv += lvcount
-        giocatore.hp = giocatore.maxhp
-        print("Vita:",giocatore.hp)
-        print("Attacco:",giocatore.atk)
-        print("Esperienza",giocatore.exp,"\n")
+    
+    print(giocatore.exp_pool,"EXP POOL PRINT PRIMA")
+    giocatore.exp_pool += 10
+    print(giocatore.exp_pool,"EXP POOL PRINT")
+    giocatore.maxhp += 10
+    giocatore.atk += 4
+    print(giocatore.exp,"GIOCATORE EXP PRINT PRIMA")
+    giocatore.exp = 0
+    print(giocatore.exp,"GIOCATORE EXP PRINT")
+    giocatore.lv += 1
+    giocatore.hp = giocatore.maxhp
+    print("Vita:",giocatore.hp)
+    print("Attacco:",giocatore.atk)
+    print("Esperienza",giocatore.exp,"\n")
 
-        input('premi qualsiasi tasto per tornare al menù!')
-        start_menu(select_challenge,load_save,player_stats,settings,heal)
+    input('premi qualsiasi tasto per tornare al menù!')
+    start_menu(giocatore)
 
 #IMPOSTAZIONI
-def settings():
+def settings():  
 
-    print("""Cosa vuoi fare?
-          1) Cambia nome giocatore
-          2) esci
-          """)    
-
-    choice = choice = get_user_choice()
+    choice = get_user_choice(
+        """Cosa vuoi fare?
+        1) Cambia nome giocatore
+        2) esci
+        """,2)
     if choice == 1:
 
         print("Come vuoi essere chiamato? Scegli un nome, non giudichiamo")
@@ -149,28 +153,28 @@ def settings():
 
     elif choice == 2:
         print("v-Prego di qua, mi segua-v")
-        start_menu(select_challenge,load_save,player_stats,settings,heal)
+        start_menu(giocatore)
 
     else:
         print("immissione non valida, me stai a perculà? dai fa il serio va a sceglie")
-        settings(select_challenge,load_save,player_stats,settings,heal) 
+        settings() 
 
 #CARICA SALVATAGGIO - WORK IN PROGRESS -
 def load_save():
 
     print("Da qui potrai caricare un file con i tuoi progressi! come si chiama il file? sii molto preciso, con tanto di estensione!")
-    print("compra il dlc per salvare i progressi, per ora torna al menù")
-    input("Premi qualsiasi tasto per proseguire")
+    print("compra il dlc per salvare i progressi, pe ora premi qualsiasi tasto per proseguire")
+    input(">")
     importsave = input(">")
-    start_menu(select_challenge,load_save,player_stats,settings,heal)
+    start_menu(giocatore)
 
 #CURA, SET HP TO MAX
-def heal():
+def heal(giocatore):
     print("Un cerusico ti trova e ti riattoppa le ferite!")
     giocatore.hp = giocatore.maxhp    
     print("Hai",giocatore.hp,"punti ferita ora!")
     input('premi qualsiasi tasto per tornare al menù!')
-    start_menu(select_challenge,load_save,player_stats,settings,heal)
+    start_menu(giocatore)
 
 #SELEZIONE DIFFICOLTA' E SCELTA NEMICO
 def select_challenge():
@@ -187,9 +191,9 @@ def select_challenge():
         enemy.hp = random.randint(50,80)
         enemy.minatk = 5
         enemy.maxatk = 10
-        enemy.exp = 5
-        #drop_item_weapon
-        #drop_item_armor
+        enemy.exp = 10
+        # #drop_item_weapon
+        # #drop_item_armor
         return enemy
 
     elif challenge == 2:
@@ -220,7 +224,7 @@ def select_challenge():
         print("immissione non valida, te risparo il pippone, premi qualcosa")
         input(">cojone<")
         select_challenge()
-    start_game(select_challenge,load_save,player_stats,settings,heal)
+    
     
 
 #start_menu(select_challenge,load_save,player_stats,settings,heal)
