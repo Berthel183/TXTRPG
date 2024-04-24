@@ -191,7 +191,7 @@ def select_challenge():
         enemy.hp = random.randint(50,80)
         enemy.minatk = 5
         enemy.maxatk = 10
-        enemy.exp = 10
+        enemy.exp = 5
         # #drop_item_weapon
         # #drop_item_armor
         return enemy
