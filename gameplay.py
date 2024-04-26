@@ -1,5 +1,6 @@
 import random
 from scelta_utente import get_user_choice
+from items import Weapon
 #from functions import start_menu
 
 def start_game(enemy,giocatore):
@@ -35,6 +36,7 @@ def start_game(enemy,giocatore):
                     print("IL TUO AVVERSARIO E' STATO SCONFITTO! DAJE ZI")
                     print("Hai guadagnato",enemy.exp,"punti esperienza!")
                     giocatore.exp += enemy.exp
+                    
                 
                     if giocatore.exp >= giocatore.exp_pool:
                         level_up(giocatore)
