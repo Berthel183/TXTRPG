@@ -12,11 +12,7 @@ class Player:
         self.lv = lv      
         self.maxhp = maxhp
         self.exp_pool = exp_pool
-        self.equip = {
-            'Arma':None,
-            'Corpo':None,
-            'Scudo':None
-        }
+        self.equip: list[Equip] = []
 
 class Enemy:
     def __init__(self,name,hp,minatk,maxatk,exp):
@@ -26,9 +22,30 @@ class Enemy:
         self.maxatk = maxatk
         self.exp = exp
 
+class Equip:
+    def __init__(self,equip_name,equip_type):
+        self.equip_name = equip_name
+        self.equip_type = equip_type
+
+class Weapon(Equip):
+    def __init__ (self,equip_name,equip_type,atk_bonus): #sempre riportare le proprietà del genitore
+        super().__init__(equip_name,equip_type)
+        self.atk_bonus: int = atk_bonus #specificato int, non necessario
+        
+
+class Helm(Equip):
+    pass
+
+class Shield(Equip):
+    pass
+
+class Chest(Equip):
+    pass
+
+
 class Bonus_Equip:
     def __init__(self,atk_bonus,def_bonus,hp_bonus):
-        self.atk_bonus = atk_bonus
+        
         self.def_bonus = def_bonus
         self.hp_bonus = hp_bonus
 
@@ -36,7 +53,7 @@ class Bonus_Equip:
 giocatore = Player(0,50,12,0,1,50,10,0)
 enemy = Enemy(0,0,0,0,0)
 equip = Bonus_Equip(0,0,0)
-
+arma = Weapon('','',0)  #istanziamento della classe
 
 
 def total_atk(giocatore):
