@@ -1,6 +1,7 @@
 #Funzioni contenute:header, player_stats, settings, load_save, heal, select_challenge, 
 from scelta_utente import get_user_choice
 from gameplay import start_game
+from items import Equip
 import random
 
 class Player:
@@ -22,44 +23,12 @@ class Enemy:
         self.maxatk = maxatk
         self.exp = exp
 
-class Equip:
-    def __init__(self,equip_name,equip_type):
-        self.equip_name = equip_name
-        self.equip_type = equip_type
-
-class Weapon(Equip):
-    def __init__ (self,equip_name,equip_type,atk_bonus): #sempre riportare le proprietà del genitore
-        super().__init__(equip_name,equip_type)
-        self.atk_bonus: int = atk_bonus #specificato int, non necessario
-        
-
-class Helm(Equip):
-    pass
-
-class Shield(Equip):
-    pass
-
-class Chest(Equip):
-    pass
-
-
-class Bonus_Equip:
-    def __init__(self,atk_bonus,def_bonus,hp_bonus):
-        
-        self.def_bonus = def_bonus
-        self.hp_bonus = hp_bonus
-
 
 giocatore = Player(0,50,12,0,1,50,10,0)
 enemy = Enemy(0,0,0,0,0)
-equip = Bonus_Equip(0,0,0)
-arma = Weapon('','',0)  #istanziamento della classe
-
 
 def total_atk(giocatore):
     giocatore.atk += giocatore.equip
-
-
 
 #Intro e primo input per creazione nome
 def header():
@@ -116,12 +85,11 @@ def start_menu(giocatore):
 
     elif choice == 6:
         print("Sei sicuro di voler uscire? ti caghi? 1 Per uscire 0 per tornare al menu")
-        close = int(input(">"))
+        close = get_user_choice("",2)
         if close == 1:
             print("a merda")
-            input("")
             exit()
-        elif close == 0:
+        elif close == 2:
             print("v-Prego di qua, mi segua-v")
             start_menu(giocatore)
 

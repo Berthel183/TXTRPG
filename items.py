@@ -1,26 +1,38 @@
-import random
-#from functions import Bonus_Equip
-from functions import Weapon
+class Equip:
+    def __init__(self,equip_name,equip_type):
+        self.equip_name = equip_name
+        self.equip_type = equip_type
+
+class Weapon(Equip):
+    def __init__ (self,equip_name,equip_type,atk_bonus): #sempre riportare le proprietà del genitore
+        super().__init__(equip_name,equip_type)
+        self.atk_bonus = atk_bonus #puoi specificare int con : int, non necessario
+        
+
+class Helm(Equip):
+    pass
+
+class Shield(Equip):
+    pass
+
+class Chest(Equip):
+    pass
 
 
-print("scegli un'arma!")
+
+arma = Weapon('','',0)  #istanziamento della classe
+
+weapon_item_tier_1 = {
+    0:{'nome':'Spada','tipo':'Arma','danno':5},
+    1:{'nome':'Claymore','tipo':'Arma','danno':10},
+    2:{'nome':'Ammazzadraghi','tipo':'Arma','danno':15}
+}
+
+def assign_weapon(player, weapon_id):
+    weapon_info = weapon_item_tier_1[weapon_id]
+    player.weapon = Weapon(weapon_info['nome'],['arma'],['danno'])
+#???????????????????????????????????????????????????????????????????????
 
 
 
 
-weapon_item_tier_1 = {'Spada':5,'Claymore':10} #danno aumentato
-armor_item_tier_1 = {'Cotta di maglia':15,'Armatura a piastre':30} #hp max
-shield_item_tier_1 = {'buckler':4,'Scudo a torre':15} #riduzione danni
-
-weapon = (weapon_item_tier_1)
-print(weapon)
-armor = None
-shield = None
-
-def item_drops():
-    drop = weapon_item_tier_1
-    
-arma = Weapon('','',0) #richiamare gli attributi
-arma.atk_bonus = 5 
-
-#Chiamare il file ITEMS.PY e dentro ficcare tutte le classi dell'equip, padre e figli Equip>Weapon>Sword---'machete/katana', dare propietà a weapon/armor/shield e lavrorare solo su queste, non su Equip(non va toccato o bay si arrabbia)
